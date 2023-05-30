@@ -1,34 +1,18 @@
 import React from 'react';
-import { useState } from 'react'
 
 import mathImage from './assets/math.png';
-import { isInteger, randomNumber } from './helpers/numbersHelper';
+import useRandom from './hooks/useRandom';
 
 function App() {
-  const [number, setNumber] = useState(0);
-  const [range, setRange] = useState({ min: 0, max: 100, error: { min: false, max: false } });
+  const { number, range, changeRange, generateRandomNumber } = useRandom({min: 1, max: 200})
 
   const handleClick = () => {
-    setNumber(randomNumber(range.min, range.max));
+    generateRandomNumber();
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let { name, value } = e.target;
-
-    let error = {
-      ...range.error,
-    };
-
-    let errorState = false;
-
-    if (!isInteger(Number(value))) errorState = true;
-
-    error = {
-      ...error,
-      [name]: errorState,
-    };
-
-    setRange({ ...range, [name]: value, error });
+    const { name, value } = e.target;
+    changeRange({name, value});
   }
 
   return (
